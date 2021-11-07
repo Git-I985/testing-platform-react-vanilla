@@ -121,11 +121,9 @@ const Question = (props) => {
                 </div>
             </div>
             <div>
-                {
-                    children ? children : <p className="has-text-centered has-text-grey-light my-3">
-                        Добавьте ответы на вопрос
-                    </p>
-                }
+                {!children.length &&
+                <p className="has-text-centered has-text-grey-light my-3">Добавьте ответы на вопрос</p>}
+                {children}
             </div>
         </div>
     )
@@ -206,6 +204,9 @@ const Base = () => {
         <div className='py-6 container questions-container'>
             <button className='button is-fullwidth is-info mb-4' onClick={addQuestion}>Добавить вопрос</button>
             <hr/>
+            {!questions.length && <p className="has-text-centered has-text-grey-light my-3">
+                Добавьте вопросы
+            </p>}
             {questions.map((question, questionIndex) => (
                 <Question key={question.id}
                           index={questionIndex}

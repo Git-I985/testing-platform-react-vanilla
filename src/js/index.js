@@ -20,15 +20,15 @@ const startTesting = (file) => {
     dropzone.addEventListener(event, (e) => e.preventDefault())
 );
 
-dropzone.addEventListener('dragenter', (e) => {
+dropzone.addEventListener('dragenter', () => {
     dropzone.classList.add('dashboard-card-hovered');
 });
 
-dropzone.addEventListener('dragover', (e) => {
+dropzone.addEventListener('dragover', () => {
     dropzone.classList.add('dashboard-card-hovered');
 });
 
-dropzone.addEventListener('dragleave', (e) => {
+dropzone.addEventListener('dragleave', () => {
     dropzone.classList.remove('dashboard-card-hovered');
 });
 

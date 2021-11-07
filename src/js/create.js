@@ -1,70 +1,101 @@
 import ReactDOM from "react-dom";
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import 'bulma-checkradio';
 
-const generateTestJSONData = ({questions, answers}) => {
-
+const nextInputOnPressEnterHandler = ({key, target}) => {
+    if(!['ArrowUp', 'ArrowDown'].includes(key)) return;
+    const container = target.closest('.questions-container')
+    const inputs = container.querySelectorAll('input[type=text]');
+    const pressedInputIndex = [...inputs].findIndex((el) => el === target)
+    const nextInputIndex = {
+        ArrowUp: pressedInputIndex > 0 ? pressedInputIndex - 1 : inputs.length - 1,
+        ArrowDown: pressedInputIndex < inputs.length - 1 ? pressedInputIndex + 1 : 0,
+    }[key];
+    inputs[nextInputIndex].focus()
 }
 
 const ID = () => Math.random().toString(36).substr(2, 9);
 
-const Answer = ({id, deleteAnswer, question, handleCorrectAnswerCheckboxChange, correct}) => {
+const Answer = ({id, deleteAnswer, question, handleCorrectAnswerCheckboxChange, changeAnswerText, correct}) => {
     return (
         <div className="field is-grouped is-align-items-center my-4">
             <div className="control is-flex-grow-1">
-                <input className="input" type="text" autoFocus/>
+                <input className="input has-background-light"
+                       type="text"
+                       onInput={({target: input}) => changeAnswerText(id, input.value)}
+                       onKeyDown={nextInputOnPressEnterHandler}
+                       autoFocus/>
             </div>
             <div className="control">
-                <button className="button is-danger is-inverted"
+                <input className={`is-checkradio is-info ${correct && 'has-background-color'}`}
+                       id={id}
+                       type={question.type === 'multipleAnswers' ? 'checkbox' : "radio"}
+                       name={question.type === 'multipleAnswers' ? id : question.id}
+                       onChange={() => handleCorrectAnswerCheckboxChange(id)}
+                       checked={correct}
+                       tabIndex="-1"
+                />
+                <label htmlFor={id} className="py-0">Правильный ответ</label>
+            </div>
+            <div className="control">
+                <button className="button is-danger is-light"
                         tabIndex="-1"
                         onClick={() => deleteAnswer(id)}
                 >
                     <i className="fas fa-times"/>
                 </button>
             </div>
-            <div className="control">
-                <input className="is-checkradio"
-                       id={id}
-                       type={question.type === 'multipleAnswers' ? 'checkbox' : "radio"}
-                       name={question.type === 'multipleAnswers' ? id : question.id}
-                       onChange={() => handleCorrectAnswerCheckboxChange(id)}
-                       checked={correct}
-                />
-                <label htmlFor={id}>Правильный ответ</label>
-            </div>
         </div>
     )
 }
 
-const Question = ({id, index, children, deleteQuestion, addQuestionAnswer, changeQuestionType}) => {
+const Question = (props) => {
+    const {
+        id,
+        index,
+        children,
+        text,
+        deleteQuestion,
+        addQuestionAnswer,
+        changeQuestionType,
+        changeQuestionText
+    } = props;
+
     const onQuestionTypeSelectChange = ({target}) => {
         changeQuestionType(id, target.options[target.selectedIndex].value)
     }
 
     return (
         <div className="box">
-            <div className="field has-addons mb-0">
-                {/* Quection index (number) */}
+            <div className="field is-grouped">
+                {/* Question index (number) */}
                 <div className="control">
-                    <button className="button is-static">{index + 1}</button>
+                    <button className="button has-text-weight-bold is-info">{index + 1}</button>
                 </div>
                 {/* Question text */}
                 <div className="control is-flex-grow-1">
-                    <input className="input" type="text" placeholder="Введите вопрос" autoFocus/>
+                    <input className="input"
+                           type="text"
+                           placeholder="Введите вопрос"
+                           value={text}
+                           onInput={({target: input}) => changeQuestionText(id, input.value)}
+                           onKeyDown={nextInputOnPressEnterHandler}
+                           autoFocus/>
                 </div>
                 {/* Question type */}
                 <div className="control">
                     <div className="select">
-                        <select tabIndex="-1"
+                        <select className="has-background-info-light has-text-info-dark"
+                                tabIndex="-1"
                                 onChange={onQuestionTypeSelectChange}>
                             <option value="oneAnswer">Один ответ</option>
                             <option value="multipleAnswers">Несколько вариантов</option>
                         </select>
                     </div>
                 </div>
-                {/* Qusetion answers */}
+                {/* Question answers */}
                 <div className="control">
-                    <button className="button is-info"
+                    <button className="button is-info is-light"
                             onClick={() => addQuestionAnswer(id)}
                             tabIndex="-1">
                         Добавить ответ
@@ -72,10 +103,11 @@ const Question = ({id, index, children, deleteQuestion, addQuestionAnswer, chang
                 </div>
                 {/* Delete question*/}
                 <div className="control">
-                    <button className="button is-danger"
+                    <button className="button is-danger is-light"
                             tabIndex="-1"
                             title="Удалить вопрос"
                             onClick={() => deleteQuestion(id)}>
+                        <span>Удалить вопрос</span>
                         <span className="icon is-small">
                           <i className="fas fa-times"/>
                         </span>
@@ -94,37 +126,46 @@ const Question = ({id, index, children, deleteQuestion, addQuestionAnswer, chang
 }
 
 const Base = () => {
-        const [questions, setQuestions] = useState([]);
+        const [questions, setQuestions] = useState([
+            {
+                id: "ixwzovt3f",
+                type: "multipleAnswers",
+                text: "Гегель выделял следующие ветви власти"
+            },
+            {
+                id: "0m5pcsym8",
+                type: "oneAnswer",
+                text: "Автором работы Левиафан является"
+            }
+        ]);
+
         const [answers, setAnswers] = useState([]);
 
-        const addQuestion = () => {
-            // if (Object.keys(questions[questions.length - 1]).length) {
-            // }
-            setQuestions([...questions, {id: ID(), type: "oneAnswer"}])
-        }
+        useEffect(() => {
+            console.log(questions)
+            console.log(answers)
+        })
 
-        const deleteQuestion = (questionId) => {
-            setQuestions(questions.filter(question => question.id !== questionId))
-        }
+        const addQuestion = () => setQuestions([...questions, {id: ID(), type: "oneAnswer", text: ''}])
 
-        const addQuestionAnswer = (questionId) => {
-            setAnswers([...answers, {id: ID(), correct: false, questionId}])
-        }
+        const addQuestionAnswer = (questionId) => setAnswers([...answers, {id: ID(), correct: false, questionId, text: ''}])
 
-        const deleteAnswer = (answerId) => {
-            setAnswers(answers.filter(({id}) => id !== answerId))
-        }
+        const deleteQuestion = (questionId) => setQuestions(questions.filter(question => question.id !== questionId))
+
+        const deleteAnswer = (answerId) => setAnswers(answers.filter(({id}) => id !== answerId))
+
+        const resetQuestionAnswers = (questionId) => setAnswers(answers.map((answer) => ({
+            ...answer,
+            ...answer.questionId === questionId && {correct: false}
+        })))
 
         const changeQuestionType = (questionId, type) => {
             setQuestions(questions.map(question => ({
                 ...question,
-                type: question.id === questionId ? type : question.type,
+                ...question.id === questionId && {type},
             })))
 
-            // обнуляем правильность ответов после смены типа ответа
-            setAnswers(answers.map((answer) => {
-                return answer.questionId === questionId ? {...answer, correct: false} : false
-            }))
+            resetQuestionAnswers(questionId)
         }
 
         const handleCorrectAnswerCheckboxChange = (answerId) => {
@@ -141,15 +182,31 @@ const Base = () => {
             }))
         }
 
+        const changeAnswerText = (answerId, text) => {
+            setAnswers(answers.map(answer => ({
+                ...answer,
+                ...answer.id === answerId && {text}
+            })))
+        }
+
+        const changeQuestionText = (questionId, text) => {
+            setQuestions(questions.map(question => ({
+                ...question,
+                ...question.id === questionId && {text}
+            })))
+        }
+
         return (
-            <div className='py-6 container'>
+            <div className='py-6 container questions-container'>
                 <button className='button is-fullwidth is-info mb-4' onClick={addQuestion}>Добавить вопрос</button>
+                <hr/>
                 {questions.map((question, questionIndex) => (
                     <Question key={question.id}
                               index={questionIndex}
                               deleteQuestion={deleteQuestion}
                               addQuestionAnswer={addQuestionAnswer}
                               changeQuestionType={changeQuestionType}
+                              changeQuestionText={changeQuestionText}
                               {...question}>
                         {answers
                             .filter(({questionId}) => questionId === question.id)
@@ -158,6 +215,7 @@ const Base = () => {
                                         deleteAnswer={deleteAnswer}
                                         question={question}
                                         handleCorrectAnswerCheckboxChange={handleCorrectAnswerCheckboxChange}
+                                        changeAnswerText={changeAnswerText}
                                         {...answer}/>
                             ))}
                     </Question>
@@ -167,7 +225,5 @@ const Base = () => {
     }
 ;
 
-ReactDOM.render(
-    <Base/>
-    , document.querySelector('#app'))
+ReactDOM.render(<Base/>, document.querySelector('#app'))
 

@@ -27,8 +27,7 @@ export const Dropdown = ({text, items = [], onChange}) => {
                  // Закрывать дропдаун при потере фокуса
                  ({currentTarget, relatedTarget}) =>
                      !currentTarget.contains(relatedTarget) && setActive(false)
-             }
-        >
+             }>
 
             <div className="dropdown-trigger">
                 <button className={`button ${!selected.value ? 'has-text-grey-light' : 'is-primary'}`}

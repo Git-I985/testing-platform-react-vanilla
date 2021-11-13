@@ -4,7 +4,7 @@ import 'bulma-checkradio';
 import 'bulma';
 import {Question} from "./components/Question";
 import {Answer} from "./components/Answer";
-import {EmptyDataMessage, ID} from "./components/Common";
+import {Dasboard} from "./components/Dashboard";
 
 
 const App = () => {
@@ -71,6 +71,16 @@ const App = () => {
 
     return (
         <div className='py-6 container questions-container'>
+            <Dasboard/>
+                {/*
+                        Можно просматривать предыдущие вопросы во время прохождения теста
+                        Можно поменять ответ на предыдущие вопросы
+                        Можно пропускать вопросы
+                        Показывать результаты ответов по окончанию теста (правильный ответ или не правильный)
+                            - Так же показывать какие ответы были правильными
+                        Установить время на прохождение теста
+                    */}
+
             <button className='button is-fullwidth is-info mb-4'
                     onClick={addQuestion}>
                 Добавить вопрос

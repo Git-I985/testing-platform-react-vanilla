@@ -91,7 +91,7 @@ const Question = (props) => {
                 {/* Question type */}
                 <div className="control">
                     <div className="select">
-                        <select className="has-background-info-light has-text-info-dark"
+                        <select className="has-background-info-light has-text-info-dark is-unselectable"
                                 tabIndex="-1"
                                 onChange={onQuestionTypeSelectChange}>
                             <option value="oneAnswer">Один ответ</option>
@@ -122,7 +122,7 @@ const Question = (props) => {
             </div>
             <div>
                 {!children.length &&
-                <p className="has-text-centered has-text-grey-light my-3">Добавьте ответы на вопрос</p>}
+                <p className="has-text-centered has-text-grey-light my-3 is-unselectable">Добавьте ответы на вопрос</p>}
                 {children}
             </div>
         </div>
@@ -204,7 +204,7 @@ const Base = () => {
         <div className='py-6 container questions-container'>
             <button className='button is-fullwidth is-info mb-4' onClick={addQuestion}>Добавить вопрос</button>
             <hr/>
-            {!questions.length && <p className="has-text-centered has-text-grey-light my-3">
+            {!questions.length && <p className="has-text-centered has-text-grey-light my-3 is-unselectable">
                 Добавьте вопросы
             </p>}
             {questions.map((question, questionIndex) => (

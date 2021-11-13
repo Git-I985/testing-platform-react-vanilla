@@ -100,6 +100,11 @@ const App = () => {
                     ))}
                 </Question>
             ))}
+            <div className="is-flex is-justify-content-center">
+                <button className="button is-rounded is-info px-4" title="Добавить вопрос" onClick={addQuestion}>
+                    <span className="icon"><i className="fas fa-plus" aria-hidden="true"/></span>
+                </button>
+            </div>
         </div>
     );
 }

@@ -28,14 +28,14 @@ const Answer = ({id, deleteAnswer, question, handleCorrectAnswerCheckboxChange, 
     return (
         <div className="field is-grouped is-align-items-center my-4">
             <div className="control is-flex-grow-1">
-                <input className="input has-background-light"
+                <input className={`input has-background-light ${correct ? 'is-primary' : ''}`}
                        type="text"
                        onInput={({target: input}) => changeAnswerText(id, input.value)}
                        onKeyDown={nextInputOnPressEnterHandler}
                        autoFocus/>
             </div>
             <div className="control is-unselectable">
-                <input className={`is-checkradio is-info ${correct && 'has-background-color'}`}
+                <input className={`is-checkradio is-primary ${correct && 'has-background-color'}`}
                        id={id}
                        type={question.type === 'multipleAnswers' ? 'checkbox' : "radio"}
                        name={question.type === 'multipleAnswers' ? id : question.id}
@@ -63,6 +63,7 @@ const Question = (props) => {
         index,
         children,
         text,
+        type,
         deleteQuestion,
         addQuestionAnswer,
         changeQuestionType,
@@ -93,8 +94,15 @@ const Question = (props) => {
                 {/* Question type 2 */}
                 <div className="control">
                     <Dropdown text={'Выберете тип ответа...'}
-                              items={[{text: 'Один ответ', value: 'oneAnswer'},
-                                  {text: 'Несколько вариантов', value: 'multipleAnswers'}]}
+                              items={
+                                  [
+                                      {text: 'Один ответ', value: 'oneAnswer'},
+                                      {text: 'Несколько вариантов', value: 'multipleAnswers'}
+                                  ].map(item => ({
+                                      ...item,
+                                      selected: item.value === type
+                                  }))
+                              }
                               onChange={onQuestionTypeSelectChange}
                     />
                 </div>

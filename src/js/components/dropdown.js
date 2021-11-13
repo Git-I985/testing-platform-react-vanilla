@@ -13,7 +13,7 @@ export const DropdownItem = ({value, text, onClick}) => {
 
 export const Dropdown = ({text, items = [], onChange}) => {
     const [active, setActive] = useState(false)
-    const [selected, setSelected] = useState({})
+    const [selected, setSelected] = useState(items.find(({selected}) => selected))
 
     const onSelectedChange = (newValue) => {
         setSelected(newValue)

@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom";
 import React, {useEffect, useState} from 'react';
 import 'bulma-checkradio';
+import {Dropdown} from "./components/dropdown";
 
 /**
  * Навигация по текстовым инпутам стрелочными клавишами
@@ -32,7 +33,7 @@ const Answer = ({id, deleteAnswer, question, handleCorrectAnswerCheckboxChange, 
                        onKeyDown={nextInputOnPressEnterHandler}
                        autoFocus/>
             </div>
-            <div className="control">
+            <div className="control is-unselectable">
                 <input className={`is-checkradio is-info ${correct && 'has-background-color'}`}
                        id={id}
                        type={question.type === 'multipleAnswers' ? 'checkbox' : "radio"}
@@ -67,8 +68,8 @@ const Question = (props) => {
         changeQuestionText
     } = props;
 
-    const onQuestionTypeSelectChange = ({target}) => {
-        changeQuestionType(id, target.options[target.selectedIndex].value)
+    const onQuestionTypeSelectChange = (value) => {
+        changeQuestionType(id, value)
     }
 
     return (
@@ -89,15 +90,23 @@ const Question = (props) => {
                            autoFocus/>
                 </div>
                 {/* Question type */}
+                {/*<div className="control">*/}
+                {/*    <div className="select">*/}
+                {/*        <select className="has-background-info-light has-text-info-dark is-unselectable"*/}
+                {/*                tabIndex="-1"*/}
+                {/*                onChange={onQuestionTypeSelectChange}>*/}
+                {/*            <option value="oneAnswer">Один ответ</option>*/}
+                {/*            <option value="multipleAnswers">Несколько вариантов</option>*/}
+                {/*        </select>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
+                {/* Question type 2 */}
                 <div className="control">
-                    <div className="select">
-                        <select className="has-background-info-light has-text-info-dark is-unselectable"
-                                tabIndex="-1"
-                                onChange={onQuestionTypeSelectChange}>
-                            <option value="oneAnswer">Один ответ</option>
-                            <option value="multipleAnswers">Несколько вариантов</option>
-                        </select>
-                    </div>
+                    <Dropdown text={'Выберете тип вопроса'}
+                              items={[{text: 'Один ответ', value: 'oneAnswer'},
+                                  {text: 'Несколько вариантов', value: 'multipleAnswers'}]}
+                              onChange={onQuestionTypeSelectChange}
+                    />
                 </div>
                 {/* Question answers */}
                 <div className="control">
@@ -146,8 +155,6 @@ const Base = () => {
     const [answers, setAnswers] = useState([]);
 
     useEffect(() => {
-        console.log(questions)
-        console.log(answers)
     })
 
     const addQuestion = () => setQuestions([...questions, {id: ID(), type: "oneAnswer", text: ''}])
@@ -158,6 +165,9 @@ const Base = () => {
 
     const deleteAnswer = (answerId) => setAnswers(answers.filter(({id}) => id !== answerId))
 
+    /**
+     * Обнуляет выбранные ответы для вопроса
+     */
     const resetQuestionAnswers = (questionId) => setAnswers(answers.map((answer) => ({
         ...answer,
         ...answer.questionId === questionId && {correct: false}

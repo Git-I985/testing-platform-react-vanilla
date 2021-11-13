@@ -1,10 +1,11 @@
 import React, {useState} from "react";
 
-export const DropdownItem = ({value, text, onClick, active}) => {
+export const DropdownItem = ({value, text, onClick}) => {
     return (
         <a href="#"
-           className={`dropdown-item ${active ? 'is-active' : ''}`}
-           onClick={() => onClick(value)}>
+           className={`dropdown-item`}
+           onClick={() => onClick({text, value})}
+        >
             {text}
         </a>
     );
@@ -12,7 +13,7 @@ export const DropdownItem = ({value, text, onClick, active}) => {
 
 export const Dropdown = ({text, items = [], onChange}) => {
     const [active, setActive] = useState(false)
-    const [selected, setSelected] = useState('')
+    const [selected, setSelected] = useState({})
 
     const onSelectedChange = (newValue) => {
         setSelected(newValue)
@@ -30,8 +31,9 @@ export const Dropdown = ({text, items = [], onChange}) => {
         >
 
             <div className="dropdown-trigger">
-                <button className="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                    <span>{text}</span>
+                <button className={`button ${!selected.value ? 'has-text-grey-light' : 'is-primary'}`}
+                        aria-haspopup="true" aria-controls="dropdown-menu">
+                    <span>{selected.text || text}</span>
                     <span className="icon is-small"> <i className="fas fa-angle-down" aria-hidden="true"/></span>
                 </button>
             </div>
@@ -42,7 +44,7 @@ export const Dropdown = ({text, items = [], onChange}) => {
                             <DropdownItem
                                 value={item.value}
                                 text={item.text}
-                                active={item.value === selected}
+                                active={item.value === selected.value}
                                 onClick={onSelectedChange}
                                 key={index}
                             />)

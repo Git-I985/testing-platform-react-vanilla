@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom";
 import React, {useEffect, useState} from 'react';
 import 'bulma-checkradio';
+import '../css/bulma.custom.scss';
 import {Dropdown} from "./components/dropdown";
 
 /**
@@ -68,7 +69,7 @@ const Question = (props) => {
         changeQuestionText
     } = props;
 
-    const onQuestionTypeSelectChange = (value) => {
+    const onQuestionTypeSelectChange = ({value}) => {
         changeQuestionType(id, value)
     }
 
@@ -80,7 +81,7 @@ const Question = (props) => {
                     <button className="button has-text-weight-bold is-info">{index + 1}</button>
                 </div>
                 {/* Question text */}
-                <div className="control is-flex-grow-1">
+                <div className="control is-expanded">
                     <input className="input"
                            type="text"
                            placeholder="Введите вопрос"
@@ -89,20 +90,9 @@ const Question = (props) => {
                            onKeyDown={nextInputOnPressEnterHandler}
                            autoFocus/>
                 </div>
-                {/* Question type */}
-                {/*<div className="control">*/}
-                {/*    <div className="select">*/}
-                {/*        <select className="has-background-info-light has-text-info-dark is-unselectable"*/}
-                {/*                tabIndex="-1"*/}
-                {/*                onChange={onQuestionTypeSelectChange}>*/}
-                {/*            <option value="oneAnswer">Один ответ</option>*/}
-                {/*            <option value="multipleAnswers">Несколько вариантов</option>*/}
-                {/*        </select>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
                 {/* Question type 2 */}
                 <div className="control">
-                    <Dropdown text={'Выберете тип вопроса'}
+                    <Dropdown text={'Выберете тип ответа...'}
                               items={[{text: 'Один ответ', value: 'oneAnswer'},
                                   {text: 'Несколько вариантов', value: 'multipleAnswers'}]}
                               onChange={onQuestionTypeSelectChange}
@@ -110,7 +100,7 @@ const Question = (props) => {
                 </div>
                 {/* Question answers */}
                 <div className="control">
-                    <button className="button is-info is-light"
+                    <button className="button is-info"
                             onClick={() => addQuestionAnswer(id)}
                             tabIndex="-1">
                         Добавить ответ
@@ -118,7 +108,7 @@ const Question = (props) => {
                 </div>
                 {/* Delete question*/}
                 <div className="control">
-                    <button className="button is-danger is-light"
+                    <button className="button is-danger"
                             tabIndex="-1"
                             title="Удалить вопрос"
                             onClick={() => deleteQuestion(id)}>

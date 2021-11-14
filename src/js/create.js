@@ -6,7 +6,10 @@ import {Question} from "./components/Question";
 import {Answer} from "./components/Answer";
 import {Dasboard} from "./components/Dashboard";
 import {createAnswerObject, createQuestionObject, MULTIPLE_ANSWERS_TYPE, ONE_ANSWER_TYPE} from "./entities/common";
-import {Box, Control, EmptyDataMessage, Field} from "./components/Common";
+import {Box, Control, EmptyDataMessage, Field, ID} from "./components/Common";
+import {combineAnswersAndQuestions, dataIsValid} from "./functions/common";
+import SimpleCrypto from "simple-crypto-js"
+import {saveAs} from 'file-saver'
 
 // TODO добавить кнопки перехода наверх и вниз
 
@@ -36,6 +39,16 @@ const App = () => {
     ]);
 
     const [answers, setAnswers] = useState([]);
+
+
+    const generateTest = () => {
+        const combinedQuestions = combineAnswersAndQuestions({questions, answers})
+        // if(dataIsValid(combinedQuestions)) { }
+        const secretKey = ID();
+        const crypter = new SimpleCrypto(secretKey);
+        const encodedData = crypter.encrypt(combinedQuestions)
+        saveAs(new Blob([JSON.stringify({secretKey, encodedData})], {type: 'application/json'}), 'test.json')
+    }
 
     const addQuestion = () => setQuestions([...questions, createQuestionObject()])
 
@@ -87,7 +100,7 @@ const App = () => {
         <div className='pt-6 container questions-container'>
             <Dasboard/>
 
-            <Box style={{position: "sticky", top: "0", "z-index": "1", 'border-radius': "0 0 6px 6px"}} my-0>
+            <Box style={{position: "sticky", top: "0", zIndex: "1", borderRadius: "0 0 6px 6px"}} my-0>
                 <Field has-addons>
                     <Control is-expanded>
                         <input className="input" type="text" placeholder="Найти вопрос... любое слово или фраза"/>
@@ -104,7 +117,7 @@ const App = () => {
                         <button className='button is-info is-fullwidth' onClick={addQuestion}>Добавить вопрос</button>
                     </Control>
                     <Control>
-                        <button className='button is-primary'>
+                        <button className='button is-primary' onClick={generateTest}>
                             <span>Сохранить тест</span>
                             <span className="icon"><i className="fas fa-download" aria-hidden="true"/></span>
                         </button>

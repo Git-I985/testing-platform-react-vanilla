@@ -90,10 +90,10 @@ const App = () => {
     }
 
     return (
-        <div className='pt-6 container questions-container'>
+        <div className='pt-6 container'>
             <Dasboard/>
 
-            <Box style={{position: "sticky", top: "0", zIndex: "1", borderRadius: "0 0 6px 6px"}} my-0>
+            <Box style={{position: "sticky", top: "0", zIndex: "1", borderRadius: "0 0 6px 6px", border: "1px solid #dbdbdb", borderTop: 'none'}} my-0>
                 <Field has-addons>
                     <Control is-expanded>
                         <input className="input" type="text" placeholder="Найти вопрос... любое слово или фраза"/>
@@ -110,7 +110,7 @@ const App = () => {
                         <button className='button is-info is-fullwidth' onClick={addQuestion}>Добавить вопрос</button>
                     </Control>
                     <Control>
-                        <button className='button is-primary' onClick={generateTest}>
+                        <button className='button is-primary' onClick={generateTest} disabled={!questions.length}>
                             <span>Сохранить тест</span>
                             <span className="icon"><i className="fas fa-download" aria-hidden="true"/></span>
                         </button>
@@ -140,26 +140,28 @@ const App = () => {
 
             {!questions.length && <EmptyDataMessage message={'Добавьте вопросы'}/>}
 
-            {questions.map((question, questionIndex) => (
-                <Question key={question.id}
-                          index={questionIndex}
-                          deleteQuestion={deleteQuestion}
-                          addQuestionAnswer={addQuestionAnswer}
-                          changeQuestionType={changeQuestionType}
-                          changeQuestionText={changeQuestionText}
-                          {...question}
-                >{answers
-                    .filter(({questionId}) => questionId === question.id)
-                    .map((answer) => (
-                        <Answer key={answer.id}
-                                deleteAnswer={deleteAnswer}
-                                question={question}
-                                handleCorrectAnswerCheckboxChange={handleCorrectAnswerCheckboxChange}
-                                changeAnswerText={changeAnswerText}
-                                {...answer}/>
-                    ))}
-                </Question>
-            ))}
+            <div className="questions-container">
+                {questions.map((question, questionIndex) => (
+                    <Question key={question.id}
+                              index={questionIndex}
+                              deleteQuestion={deleteQuestion}
+                              addQuestionAnswer={addQuestionAnswer}
+                              changeQuestionType={changeQuestionType}
+                              changeQuestionText={changeQuestionText}
+                              {...question}
+                    >{answers
+                        .filter(({questionId}) => questionId === question.id)
+                        .map((answer) => (
+                            <Answer key={answer.id}
+                                    deleteAnswer={deleteAnswer}
+                                    question={question}
+                                    handleCorrectAnswerCheckboxChange={handleCorrectAnswerCheckboxChange}
+                                    changeAnswerText={changeAnswerText}
+                                    {...answer}/>
+                        ))}
+                    </Question>
+                ))}
+            </div>
         </div>
     );
 };

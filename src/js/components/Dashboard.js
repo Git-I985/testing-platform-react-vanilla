@@ -11,7 +11,7 @@ import {Box, CheckBox, Control, Field} from "./Common";
                     */}
 export const Dasboard = () => {
     return (
-        <Box style={{borderRadius: "6px 6px 0 0"}} mb-0>
+        <Box style={{borderRadius: "6px 6px 0 0", border: '1px solid #dbdbdb', borderBottom: 'none'}} mb-0>
             <Field>
                 <label className="label">Название</label>
                 <Control>

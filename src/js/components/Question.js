@@ -22,7 +22,7 @@ export const Question = (props) => {
     }
 
     return (
-        <Box>
+        <Box style={{border: '1px solid #dbdbdb'}}>
             <Field is-grouped>
 
                 {/* Question index (number) */}

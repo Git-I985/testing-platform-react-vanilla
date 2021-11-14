@@ -11,16 +11,9 @@ import {combineAnswersAndQuestions, dataIsValid} from "./functions/common";
 import SimpleCrypto from "simple-crypto-js"
 import {saveAs} from 'file-saver'
 
-// TODO добавить кнопки перехода наверх и вниз
-
-// TODO сделать функцию генерации json из данных
-// TODO сделать функцию шифрования
-// TODO добавить кнопку скачивания теста
 
 // TODO добавить поиск по вопросам
-
 // TODO добавить кнопку дублирования вопроса
-
 // TODO добавить кнопку очистка всех вопросов
 // TODO добавить кнопку очистки всех ответов на вопрос
 

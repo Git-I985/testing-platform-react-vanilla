@@ -6,16 +6,21 @@ import {Question} from "./components/Question";
 import {Answer} from "./components/Answer";
 import {Dasboard} from "./components/Dashboard";
 import {createAnswerObject, createQuestionObject, MULTIPLE_ANSWERS_TYPE, ONE_ANSWER_TYPE} from "./entities/common";
-import {EmptyDataMessage} from "./components/Common";
+import {Box, Control, EmptyDataMessage, Field} from "./components/Common";
 
-// TODO вынести литералы объектов в нормальные классы
+// TODO добавить кнопки перехода наверх и вниз
+
 // TODO сделать функцию генерации json из данных
 // TODO сделать функцию шифрования
 // TODO добавить кнопку скачивания теста
+
 // TODO добавить поиск по вопросам
+
 // TODO добавить кнопку дублирования вопроса
+
 // TODO добавить кнопку очистка всех вопросов
 // TODO добавить кнопку очистки всех ответов на вопрос
+
 const App = () => {
     const [questions, setQuestions] = useState([
         {
@@ -79,21 +84,51 @@ const App = () => {
     }
 
     return (
-        <div className='py-6 container questions-container'>
+        <div className='pt-6 container questions-container'>
             <Dasboard/>
-                {/*
-                        Можно просматривать предыдущие вопросы во время прохождения теста
-                        Можно поменять ответ на предыдущие вопросы
-                        Можно пропускать вопросы
-                        Показывать результаты ответов по окончанию теста (правильный ответ или не правильный)
-                            - Так же показывать какие ответы были правильными
-                        Установить время на прохождение теста
-                    */}
 
-            <button className='button is-fullwidth is-info mb-4'
-                    onClick={addQuestion}>
-                Добавить вопрос
-            </button>
+            <Box style={{position: "sticky", top: "0", "z-index": "1", 'border-radius': "0 0 6px 6px"}} my-0>
+                <Field has-addons>
+                    <Control is-expanded>
+                        <input className="input" type="text" placeholder="Найти вопрос... любое слово или фраза"/>
+                    </Control>
+                    <Control>
+                        <button className="button is-info">
+                            <span>Найти</span>
+                            <span className="icon"><i className="fas fa-search" aria-hidden="true"/></span>
+                        </button>
+                    </Control>
+                </Field>
+                <Field is-grouped>
+                    <Control is-expanded>
+                        <button className='button is-info is-fullwidth' onClick={addQuestion}>Добавить вопрос</button>
+                    </Control>
+                    <Control>
+                        <button className='button is-primary'>
+                            <span>Сохранить тест</span>
+                            <span className="icon"><i className="fas fa-download" aria-hidden="true"/></span>
+                        </button>
+                    </Control>
+                    <Control>
+                        <button className='button is-light' onClick={() => window.scrollTo({
+                            top: 0,
+                            behavior: "smooth"
+                        })}>
+                            <span>Наверх</span>
+                            <span className="icon"><i className="fas fa-arrow-up" aria-hidden="true"/></span>
+                        </button>
+                    </Control>
+                    <Control>
+                        <button className='button is-light' onClick={() => window.scrollTo({
+                            top: document.body.scrollHeight,
+                            behavior: "smooth"
+                        })}>
+                            <span>Вниз</span>
+                            <span className="icon"><i className="fas fa-arrow-down" aria-hidden="true"/></span>
+                        </button>
+                    </Control>
+                </Field>
+            </Box>
 
             <hr/>
 
@@ -119,16 +154,9 @@ const App = () => {
                     ))}
                 </Question>
             ))}
-            <div className="is-flex is-justify-content-center">
-                <button className="button is-rounded is-info px-4" title="Добавить вопрос" onClick={addQuestion}>
-                    <span className="icon"><i className="fas fa-plus" aria-hidden="true"/></span>
-                </button>
-            </div>
         </div>
     );
-}
+};
 
-ReactDOM.render(
-    <App/>
-    , document.querySelector('#app'))
+ReactDOM.render(<App/>, document.querySelector('#app'))
 

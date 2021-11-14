@@ -32,7 +32,7 @@ export const Question = (props) => {
 
                 {/* Question text */}
                 <Control is-expanded>
-                    <input className="input"
+                    <input className="input has-background-light"
                            type="text"
                            placeholder="Введите вопрос"
                            value={text}

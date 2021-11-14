@@ -2,7 +2,7 @@ import React, {useState} from "react";
 
 export const DropdownItem = ({value, text, onClick}) => {
     return (
-        <a href="#"
+        <a href="javascript:;"
            className={`dropdown-item`}
            onClick={() => onClick({text, value})}
         >

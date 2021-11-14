@@ -2,6 +2,7 @@ import React from "react";
 
 import {Dropdown} from "./Dropdown";
 import {Box, Control, EmptyDataMessage, Field, nextInputOnPressEnterHandler} from "./Common";
+import {MULTIPLE_ANSWERS_TYPE, ONE_ANSWER_TYPE} from "../entities/common";
 
 export const Question = (props) => {
     const {
@@ -45,8 +46,8 @@ export const Question = (props) => {
                     <Dropdown text={'Выберете тип ответа...'}
                               items={
                                   [
-                                      {text: 'Один ответ', value: 'oneAnswer'},
-                                      {text: 'Несколько вариантов', value: 'multipleAnswers'}
+                                      {text: 'Один ответ', value: ONE_ANSWER_TYPE},
+                                      {text: 'Несколько вариантов', value: MULTIPLE_ANSWERS_TYPE}
                                   ].map(item => ({
                                       ...item,
                                       selected: item.value === type

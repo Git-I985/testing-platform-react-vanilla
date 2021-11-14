@@ -5,27 +5,36 @@ import 'bulma';
 import {Question} from "./components/Question";
 import {Answer} from "./components/Answer";
 import {Dasboard} from "./components/Dashboard";
+import {createAnswerObject, createQuestionObject, MULTIPLE_ANSWERS_TYPE, ONE_ANSWER_TYPE} from "./entities/common";
+import {EmptyDataMessage} from "./components/Common";
 
-
+// TODO вынести литералы объектов в нормальные классы
+// TODO сделать функцию генерации json из данных
+// TODO сделать функцию шифрования
+// TODO добавить кнопку скачивания теста
+// TODO добавить поиск по вопросам
+// TODO добавить кнопку дублирования вопроса
+// TODO добавить кнопку очистка всех вопросов
+// TODO добавить кнопку очистки всех ответов на вопрос
 const App = () => {
     const [questions, setQuestions] = useState([
         {
             id: "ixwzovt3f",
-            type: "multipleAnswers",
+            type: MULTIPLE_ANSWERS_TYPE,
             text: "Гегель выделял следующие ветви власти"
         },
         {
             id: "0m5pcsym8",
-            type: "oneAnswer",
+            type: ONE_ANSWER_TYPE,
             text: "Автором работы Левиафан является"
         }
     ]);
 
     const [answers, setAnswers] = useState([]);
 
-    const addQuestion = () => setQuestions([...questions, {id: ID(), type: "oneAnswer", text: ''}])
+    const addQuestion = () => setQuestions([...questions, createQuestionObject()])
 
-    const addQuestionAnswer = (questionId) => setAnswers([...answers, {id: ID(), correct: false, questionId, text: ''}])
+    const addQuestionAnswer = (questionId) => setAnswers([...answers, createAnswerObject(questionId)])
 
     const deleteQuestion = (questionId) => setQuestions(questions.filter(question => question.id !== questionId))
 
@@ -63,7 +72,7 @@ const App = () => {
             if (answer.questionId !== questionId) return answer;
             if (answer.id !== answerId) return {
                 ...answer,
-                correct: questionType === 'oneAnswer' ? false : answer.correct
+                correct: questionType === ONE_ANSWER_TYPE ? false : answer.correct
             }
             return {...answer, correct: !answer.correct}
         }))

@@ -1,5 +1,6 @@
 import React from "react";
 import {Control, nextInputOnPressEnterHandler} from "./Common";
+import {MULTIPLE_ANSWERS_TYPE} from "../entities/common";
 
 
 export const Answer = ({id, deleteAnswer, question, handleCorrectAnswerCheckboxChange, changeAnswerText, correct}) => {
@@ -15,8 +16,8 @@ export const Answer = ({id, deleteAnswer, question, handleCorrectAnswerCheckboxC
             <Control is-unselectable>
                 <input className={`is-checkradio is-primary ${correct && 'has-background-color'}`}
                        id={id}
-                       type={question.type === 'multipleAnswers' ? 'checkbox' : "radio"}
-                       name={question.type === 'multipleAnswers' ? id : question.id}
+                       type={question.type === MULTIPLE_ANSWERS_TYPE ? 'checkbox' : "radio"}
+                       name={question.type === MULTIPLE_ANSWERS_TYPE ? id : question.id}
                        onChange={() => handleCorrectAnswerCheckboxChange(id)}
                        checked={correct}
                        tabIndex="-1"

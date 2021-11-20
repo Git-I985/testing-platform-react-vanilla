@@ -1,15 +1,17 @@
 import ReactDOM from "react-dom";
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import 'bulma-checkradio';
 import 'bulma';
 import {Question} from "./components/Question";
 import {Answer} from "./components/Answer";
-import {Dasboard} from "./components/Dashboard";
-import {createAnswerObject, createQuestionObject, MULTIPLE_ANSWERS_TYPE, ONE_ANSWER_TYPE} from "./entities/common";
-import {Box, Control, EmptyDataMessage, Field, ID} from "./components/Common";
-import {combineAnswersAndQuestions, dataIsValid} from "./functions/common";
+import {SettingsDashboard} from "./components/Dashboard";
+import {createAnswerObject, createQuestionObject, ONE_ANSWER_TYPE} from "./entities/common";
+import {Box, EmptyDataMessage,ID} from "./components/Common";
+import {mergeData, dataIsValid} from "./functions/common";
 import SimpleCrypto from "simple-crypto-js"
 import {saveAs} from 'file-saver'
+import {SearchBar} from "./components/SearchBar";
+import {ControlsBar} from "./components/ControlsBar";
 
 
 // TODO добавить поиск по вопросам
@@ -18,30 +20,25 @@ import {saveAs} from 'file-saver'
 // TODO добавить кнопку очистки всех ответов на вопрос
 
 const App = () => {
-    const [questions, setQuestions] = useState([
-        {
-            id: "ixwzovt3f",
-            type: MULTIPLE_ANSWERS_TYPE,
-            text: "Гегель выделял следующие ветви власти"
-        },
-        {
-            id: "0m5pcsym8",
-            type: ONE_ANSWER_TYPE,
-            text: "Автором работы Левиафан является"
-        }
-    ]);
-
+    const [questions, setQuestions] = useState([]);
     const [answers, setAnswers] = useState([]);
-
+    const [settings, setSettings] = useState({});
 
     const generateTest = () => {
-        const combinedQuestions = combineAnswersAndQuestions({questions, answers})
+        const combinedQuestions = mergeData({questions, answers, settings})
         // if(dataIsValid(combinedQuestions)) { }
         const secretKey = ID();
         const crypter = new SimpleCrypto(secretKey);
         const encodedData = crypter.encrypt(combinedQuestions)
         saveAs(new Blob([JSON.stringify({secretKey, encodedData})], {type: 'application/json'}), 'test.json')
     }
+
+    // TODO DEBUG
+    const [generated, setGenerated] = useState('')
+    useEffect(() => {
+        setGenerated(JSON.stringify(mergeData({questions, answers, settings}), null, 4))
+    }, [questions,answers,settings]);
+
 
     const addQuestion = () => setQuestions([...questions, createQuestionObject()])
 
@@ -91,76 +88,51 @@ const App = () => {
 
     return (
         <div className='pt-6 container'>
-            <Dasboard/>
+            <div className="is-flex">
+                <div>
+                    <pre>{generated}</pre>
+                </div>
+                <div className="is-flex-grow-1">
+                    <SettingsDashboard onSettingsChange={(updatedSettings) => setSettings(updatedSettings)}/>
+                    <Box style={{
+                        position: "sticky",
+                        top: "0",
+                        zIndex: "1",
+                        borderRadius: "0 0 6px 6px",
+                        border: "1px solid #dbdbdb",
+                        borderTop: 'none'
+                    }} my-0>
+                        <SearchBar/>
+                        <ControlsBar generateTest={generateTest} addQuestion={addQuestion} questions={questions}/>
+                    </Box>
 
-            <Box style={{position: "sticky", top: "0", zIndex: "1", borderRadius: "0 0 6px 6px", border: "1px solid #dbdbdb", borderTop: 'none'}} my-0>
-                <Field has-addons>
-                    <Control is-expanded>
-                        <input className="input" type="text" placeholder="Найти вопрос... любое слово или фраза"/>
-                    </Control>
-                    <Control>
-                        <button className="button is-info">
-                            <span>Найти</span>
-                            <span className="icon"><i className="fas fa-search" aria-hidden="true"/></span>
-                        </button>
-                    </Control>
-                </Field>
-                <Field is-grouped>
-                    <Control is-expanded>
-                        <button className='button is-info is-fullwidth' onClick={addQuestion}>Добавить вопрос</button>
-                    </Control>
-                    <Control>
-                        <button className='button is-light' onClick={() => window.scrollTo({
-                            top: 0,
-                            behavior: "smooth"
-                        })}>
-                            <span>Наверх</span>
-                            <span className="icon"><i className="fas fa-arrow-up" aria-hidden="true"/></span>
-                        </button>
-                    </Control>
-                    <Control>
-                        <button className='button is-light' onClick={() => window.scrollTo({
-                            top: document.body.scrollHeight,
-                            behavior: "smooth"
-                        })}>
-                            <span>Вниз</span>
-                            <span className="icon"><i className="fas fa-arrow-down" aria-hidden="true"/></span>
-                        </button>
-                    </Control>
-                    <Control>
-                        <button className='button is-primary' onClick={generateTest} disabled={!questions.length}>
-                            <span>Сохранить тест</span>
-                            <span className="icon"><i className="fas fa-download" aria-hidden="true"/></span>
-                        </button>
-                    </Control>
-                </Field>
-            </Box>
+                    <hr/>
 
-            <hr/>
+                    {!questions.length && <EmptyDataMessage message={'Добавьте вопросы'}/>}
 
-            {!questions.length && <EmptyDataMessage message={'Добавьте вопросы'}/>}
-
-            <div className="questions-container">
-                {questions.map((question, questionIndex) => (
-                    <Question key={question.id}
-                              index={questionIndex}
-                              deleteQuestion={deleteQuestion}
-                              addQuestionAnswer={addQuestionAnswer}
-                              changeQuestionType={changeQuestionType}
-                              changeQuestionText={changeQuestionText}
-                              {...question}
-                    >{answers
-                        .filter(({questionId}) => questionId === question.id)
-                        .map((answer) => (
-                            <Answer key={answer.id}
-                                    deleteAnswer={deleteAnswer}
-                                    question={question}
-                                    handleCorrectAnswerCheckboxChange={handleCorrectAnswerCheckboxChange}
-                                    changeAnswerText={changeAnswerText}
-                                    {...answer}/>
+                    <div className="questions-container">
+                        {questions.map((question, questionIndex) => (
+                            <Question key={question.id}
+                                      index={questionIndex}
+                                      deleteQuestion={deleteQuestion}
+                                      addQuestionAnswer={addQuestionAnswer}
+                                      changeQuestionType={changeQuestionType}
+                                      changeQuestionText={changeQuestionText}
+                                      {...question}
+                            >{answers
+                                .filter(({questionId}) => questionId === question.id)
+                                .map((answer) => (
+                                    <Answer key={answer.id}
+                                            deleteAnswer={deleteAnswer}
+                                            question={question}
+                                            handleCorrectAnswerCheckboxChange={handleCorrectAnswerCheckboxChange}
+                                            changeAnswerText={changeAnswerText}
+                                            {...answer}/>
+                                ))}
+                            </Question>
                         ))}
-                    </Question>
-                ))}
+                    </div>
+                </div>
             </div>
         </div>
     );

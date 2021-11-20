@@ -1,21 +1,38 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Box, CheckBox, Control, Field} from "./Common";
 
-{/*
-                        Можно просматривать предыдущие вопросы во время прохождения теста
-                        Можно поменять ответ на предыдущие вопросы
-                        Можно пропускать вопросы
-                        Показывать результаты ответов по окончанию теста (правильный ответ или не правильный)
-                            - Так же показывать какие ответы были правильными
-                        Установить время на прохождение теста
-                    */}
-export const Dasboard = () => {
+export const settingsDashboardFields = [
+    {text: 'Можно просматривать предыдущие вопросы во время прохождения теста', label: 'Настройки', name: 'settings1'},
+    {text: 'Можно поменять ответ на предыдущие вопросы', name: 'settings2'},
+    {text: 'Можно пропускать вопросы', name: 'settings3'},
+    {text: 'Показывать результаты ответов по окончанию теста (правильный ответ или не правильный)', name: 'settings4'},
+    {text: 'Так же показывать какие ответы были правильными', name: 'settings5'},
+    {text: 'Перемешивать вопросы и ответы', name: 'settings6'},
+    {text: 'Сразу после ответа на вопрос показывать правильный ли был ответ', name: 'settings7'},
+    {text: 'Показывать подсказки', name: 'settings8'},
+]
+
+export const SettingsDashboard = ({onSettingsChange}) => {
+    /** object with n keys named by settingsDashboardFields entries name field */
+    const [settings, setSettings] = useState(settingsDashboardFields.reduce((acc, {name}) => ({
+        ...acc,
+        [name]: false
+    }), {}))
+
+    useEffect(() => {
+        onSettingsChange(settings)
+    }, [settings]);
+
+
+    const handleChange = (fieldName) => {
+        setSettings({...settings, [fieldName]: !settings[fieldName]})
+    }
+
     return (
         <Box style={{borderRadius: "6px 6px 0 0", border: '1px solid #dbdbdb', borderBottom: 'none'}} mb-0>
             <Field>
                 <label className="label">Название</label>
                 <Control>
-
                     <input className="input" type="text"/>
                 </Control>
             </Field>
@@ -25,52 +42,15 @@ export const Dasboard = () => {
                     <textarea className="textarea has-fixed-size is-small"/>
                 </Control>
             </Field>
-            <Field>
-                <label className="label is-small">Настройки</label>
-                <Control>
-                    <CheckBox
-                        text={'Можно просматривать предыдущие вопросы во время прохождения теста'}
-                        is-info
-                        is-small
-                    />
-                </Control>
-            </Field>
-            <Field>
-                <Control>
-                    <CheckBox
-                        text={'Можно поменять ответ на предыдущие вопросы'}
-                        is-info
-                        is-small
-                    />
-                </Control>
-            </Field>
-            <Field>
-                <Control>
-                    <CheckBox
-                        text={'Можно пропускать вопросы'}
-                        is-info
-                        is-small
-                    />
-                </Control>
-            </Field>
-            <Field>
-                <Control>
-                    <CheckBox
-                        text={'Показывать результаты ответов по окончанию теста (правильный ответ или не правильный)'}
-                        is-info
-                        is-small
-                    />
-                </Control>
-            </Field>
-            <Field>
-                <Control>
-                    <CheckBox
-                        text={'Так же показывать какие ответы были правильными'}
-                        is-info
-                        is-small
-                    />
-                </Control>
-            </Field>
+            {settingsDashboardFields.map(field => (
+                <Field key={field.name}>
+                    {field.label && <label className="label is-small">{field.label}</label>}
+                    <Control>
+                        <CheckBox text={field.text} checked={settings[field.name]}
+                                  onChange={() => handleChange(field.name)} is-info is-small/>
+                    </Control>
+                </Field>
+            ))}
         </Box>
     )
 }

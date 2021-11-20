@@ -34,7 +34,10 @@ export const dataIsValid = (questions) => {
  * @param {Object}
  * @return {Object}
  */
-export const combineAnswersAndQuestions = ({answers, questions}) => questions.map(question => ({
-    ...question,
-    answers: answers.filter(({questionId}) => questionId === question.id) || []
-}))
+export const mergeData = ({answers, questions, settings}) => ({
+    settings,
+    questions: questions.map(question => ({
+        ...question,
+        answers: answers.filter(({questionId}) => questionId === question.id) || []
+    }))
+})

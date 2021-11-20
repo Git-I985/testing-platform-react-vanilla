@@ -41,7 +41,7 @@ export const Question = (props) => {
                            autoFocus/>
                 </Control>
 
-                {/* Question type (dropdown version) */}
+                {/* Question type */}
                 <Control>
                     <Dropdown text={'Выберете тип ответа...'}
                               items={
@@ -58,13 +58,13 @@ export const Question = (props) => {
                 </Control>
 
                 {/* Question add answer button */}
-                <Control>
-                    <button className="button is-info"
-                            onClick={() => addQuestionAnswer(id)}
-                            tabIndex="-1">
-                        Добавить ответ
-                    </button>
-                </Control>
+                    <Control>
+                        <button className="button is-info"
+                                onClick={() => addQuestionAnswer(id)}
+                                tabIndex="-1">
+                            Добавить ответ
+                        </button>
+                    </Control>
 
                 {/* Delete question button */}
                 <Control>

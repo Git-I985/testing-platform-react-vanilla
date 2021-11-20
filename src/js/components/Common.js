@@ -34,16 +34,15 @@ export const Field = ({children, ...props}) => <div
 export const EmptyDataMessage = ({message}) => <p
     className="has-text-centered has-text-grey-light my-3 is-unselectable">{message}</p>
 
-export const CheckBox = ({text, ...props}) => {
+export const CheckBox = ({text, checked, onChange, ...props}) => {
     const id = ID();
-    const [correct, setCorrect] = useState(false)
     return (
         <>
-            <input className={['is-checkradio', correct ? 'has-background-color' : '', ...Object.keys(props)].join(' ')}
+            <input className={['is-checkradio', checked ? 'has-background-color' : '', ...Object.keys(props)].join(' ')}
                    tabIndex="-1"
                    type='checkbox'
-                   checked={correct}
-                   onChange={() => setCorrect(!correct)}
+                   checked={checked}
+                   onChange={onChange}
                    id={id}
             />
             <label htmlFor={id} className="py-0 is-unselectable">{text}</label>

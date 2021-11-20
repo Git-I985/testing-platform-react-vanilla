@@ -1,1 +1,27 @@
 @import "~bulma/bulma.sass";
+
+
+::-webkit-scrollbar {
+  width: 17px;
+  background-color: $light;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: $grey-light;
+  border-radius: 10px;
+  border: 5px solid $light;
+  &:hover {
+    background-color: $grey;
+  }
+}
+
+.dashboard {
+  max-height: 100vh;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: scroll;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0;
+}

@@ -28,8 +28,8 @@ export const Control = ({children, ...props}) => <div
 
 export const Box = ({children, style, ...props}) => <div className={["box", ...Object.keys(props)].join(' ')} style={style}>{children}</div>
 
-export const Field = ({children, ...props}) => <div
-    className={["field", ...Object.keys(props)].join(' ')}>{children}</div>
+export const Field = ({children, style, ...props}) => <div
+    className={["field", ...Object.keys(props)].join(' ')} style={style}>{children}</div>
 
 export const EmptyDataMessage = ({message}) => <p
     className="has-text-centered has-text-grey-light my-3 is-unselectable">{message}</p>

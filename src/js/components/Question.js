@@ -46,7 +46,7 @@ export const Question = (props) => {
                     </button>
                 </Control>
             </Field>
-            <Field is-grouped>
+            <Field style={{gap: '1rem'}} is-grouped is-flex-wrap-wrap>
 
                 {/* Question index (number) */}
                 <Control>

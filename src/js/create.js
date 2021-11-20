@@ -1,16 +1,15 @@
 import ReactDOM from "react-dom";
 import React, {useEffect, useState} from 'react';
 import 'bulma-checkradio';
-import 'bulma';
+import './../css/bulma.custom.scss';
 import {Question} from "./components/Question";
 import {Answer} from "./components/Answer";
 import {SettingsDashboard} from "./components/Dashboard";
 import {createAnswerObject, createQuestionObject, ONE_ANSWER_TYPE} from "./entities/common";
-import {Box, EmptyDataMessage,ID} from "./components/Common";
+import {Box, EmptyDataMessage, ID} from "./components/Common";
 import {mergeData, dataIsValid} from "./functions/common";
 import SimpleCrypto from "simple-crypto-js"
 import {saveAs} from 'file-saver'
-import {SearchBar} from "./components/SearchBar";
 import {ControlsBar} from "./components/ControlsBar";
 
 const App = () => {
@@ -31,7 +30,7 @@ const App = () => {
     const [generated, setGenerated] = useState('')
     useEffect(() => {
         setGenerated(JSON.stringify(mergeData({questions, answers, settings}), null, 4))
-    }, [questions,answers,settings]);
+    }, [questions, answers, settings]);
     // TODO =============== DEBUG
 
     const addQuestion = () => {
@@ -112,59 +111,42 @@ const App = () => {
     }
 
     return (
-        <div className='pt-6 container'>
-            {/* TODO =============== DEBUG --> */}
-            <div className="is-flex">
-                <div>
-                    <pre>{generated}</pre>
+        <div className="is-flex is-align-items-start">
+            <SettingsDashboard
+                onSettingsChange={(updatedSettings) => setSettings(updatedSettings)}
+                header={<ControlsBar generateTest={generateTest} addQuestion={addQuestion} questions={questions}/>}
+                footer={<pre>{generated}</pre>}
+            />
+            <div className="is-flex-grow-5 px-6">
+                <hr/>
+
+                {!questions.length && <EmptyDataMessage message={'Добавьте вопросы'}/>}
+
+                <div className="questions-container">
+                    {questions.map((question, questionIndex) => (
+                        <Question key={question.id}
+                                  index={questionIndex}
+                                  deleteQuestion={deleteQuestion}
+                                  addQuestionAnswer={addQuestionAnswer}
+                                  changeQuestionType={changeQuestionType}
+                                  clearQuestionAnswers={clearQuestionAnswers}
+                                  changeQuestionText={changeQuestionText}
+                                  duplicateQuestion={duplicateQuestion}
+                                  {...question}
+                        >{answers
+                            .filter(({questionId}) => questionId === question.id)
+                            .map((answer) => (
+                                <Answer key={answer.id}
+                                        deleteAnswer={deleteAnswer}
+                                        question={question}
+                                        handleCorrectAnswerCheckboxChange={handleCorrectAnswerCheckboxChange}
+                                        changeAnswerText={changeAnswerText}
+                                        {...answer}/>
+                            ))}
+                        </Question>
+                    ))}
                 </div>
-                {/* TODO =============== DEBUG --> */}
-                <div className="is-flex-grow-1">
-                    <SettingsDashboard onSettingsChange={(updatedSettings) => setSettings(updatedSettings)}/>
-                    <Box style={{
-                        position: "sticky",
-                        top: "0",
-                        zIndex: "1",
-                        borderRadius: "0 0 6px 6px",
-                        border: "1px solid #dbdbdb",
-                        borderTop: 'none'
-                    }} my-0>
-                        <SearchBar/>
-                        <ControlsBar generateTest={generateTest} addQuestion={addQuestion} questions={questions}/>
-                    </Box>
-
-                    <hr/>
-
-                    {!questions.length && <EmptyDataMessage message={'Добавьте вопросы'}/>}
-
-                    <div className="questions-container">
-                        {questions.map((question, questionIndex) => (
-                            <Question key={question.id}
-                                      index={questionIndex}
-                                      deleteQuestion={deleteQuestion}
-                                      addQuestionAnswer={addQuestionAnswer}
-                                      changeQuestionType={changeQuestionType}
-                                      clearQuestionAnswers={clearQuestionAnswers}
-                                      changeQuestionText={changeQuestionText}
-                                      duplicateQuestion={duplicateQuestion}
-                                      {...question}
-                            >{answers
-                                .filter(({questionId}) => questionId === question.id)
-                                .map((answer) => (
-                                    <Answer key={answer.id}
-                                            deleteAnswer={deleteAnswer}
-                                            question={question}
-                                            handleCorrectAnswerCheckboxChange={handleCorrectAnswerCheckboxChange}
-                                            changeAnswerText={changeAnswerText}
-                                            {...answer}/>
-                                ))}
-                            </Question>
-                        ))}
-                    </div>
-                </div>
-                {/* TODO =============== DEBUG --> */}
             </div>
-            {/* TODO =============== DEBUG --> */}
         </div>
     );
 };

@@ -52,8 +52,8 @@ export const SettingsDashboard = ({onSettingsChange, header, footer}) => {
                         </Control>
                     </Field>
                 ))}
+                {footer}
             </div>
-            {footer}
         </Box>
     )
 }

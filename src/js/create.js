@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom";
 import React, {useEffect, useState} from 'react';
 import 'bulma-checkradio';
+import 'bulma-switch';
 import './../css/bulma.custom.scss';
 import {Question} from "./components/Question";
 import {Answer} from "./components/Answer";
@@ -29,9 +30,12 @@ const App = () => {
 
     // TODO =============== DEBUG
     const [generated, setGenerated] = useState('')
+    const [debugMode, setDebugMode] = useState(false)
     useEffect(() => {
-        setGenerated(JSON.stringify(mergeData({questions, answers, settings}), null, 4))
-    }, [questions, answers, settings]);
+        if (debugMode) {
+            setGenerated(JSON.stringify(mergeData({questions, answers, settings}), null, 4))
+        }
+    }, [questions, answers, settings, debugMode]);
     // TODO =============== DEBUG
 
     const addQuestion = () => {
@@ -126,7 +130,18 @@ const App = () => {
                     addQuestion={addQuestion}
                     questions={questions}
                     handleSearchInputChange={handleSearchInputChange}/>}
-                footer={<pre>{generated}</pre>}
+                    footer={
+                        <div className="mt-6">
+                            <div className="field is-unselectable">
+                                <input id="switchRoundedInfo" type="checkbox" name="switchRoundedInfo"
+                                       className="switch is-rounded is-info" checked={debugMode}
+                                       onChange={() => setDebugMode(!debugMode)}
+                                />
+                                <label htmlFor="switchRoundedInfo">Режим отладки</label>
+                            </div>
+                            {debugMode && <pre>{generated}</pre>}
+                        </div>
+                    }
             />
             <div className="is-flex-grow-5 px-6">
                 <hr/>
@@ -135,27 +150,27 @@ const App = () => {
 
                 <div className="questions-container">
                     {filtredQuestions.map((question, questionIndex) => (
-                            <Question key={question.id}
-                                      index={questionIndex}
-                                      deleteQuestion={deleteQuestion}
-                                      addQuestionAnswer={addQuestionAnswer}
-                                      changeQuestionType={changeQuestionType}
-                                      clearQuestionAnswers={clearQuestionAnswers}
-                                      changeQuestionText={changeQuestionText}
-                                      duplicateQuestion={duplicateQuestion}
-                                      {...question}
-                            >{answers
-                                .filter(({questionId}) => questionId === question.id)
-                                .map((answer) => (
-                                    <Answer key={answer.id}
-                                            deleteAnswer={deleteAnswer}
-                                            question={question}
-                                            handleCorrectAnswerCheckboxChange={handleCorrectAnswerCheckboxChange}
-                                            changeAnswerText={changeAnswerText}
-                                            {...answer}/>
-                                ))}
-                            </Question>
-                        ))}
+                        <Question key={question.id}
+                                  index={questionIndex}
+                                  deleteQuestion={deleteQuestion}
+                                  addQuestionAnswer={addQuestionAnswer}
+                                  changeQuestionType={changeQuestionType}
+                                  clearQuestionAnswers={clearQuestionAnswers}
+                                  changeQuestionText={changeQuestionText}
+                                  duplicateQuestion={duplicateQuestion}
+                                  {...question}
+                        >{answers
+                            .filter(({questionId}) => questionId === question.id)
+                            .map((answer) => (
+                                <Answer key={answer.id}
+                                        deleteAnswer={deleteAnswer}
+                                        question={question}
+                                        handleCorrectAnswerCheckboxChange={handleCorrectAnswerCheckboxChange}
+                                        changeAnswerText={changeAnswerText}
+                                        {...answer}/>
+                            ))}
+                        </Question>
+                    ))}
                 </div>
             </div>
         </div>

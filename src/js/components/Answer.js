@@ -3,13 +3,14 @@ import {Control, nextInputOnPressEnterHandler} from "./Common";
 import {MULTIPLE_ANSWERS_TYPE} from "../entities/common";
 
 
-export const Answer = ({id, deleteAnswer, question, handleCorrectAnswerCheckboxChange, changeAnswerText, correct}) => {
+export const Answer = ({id, deleteAnswer, question, text, handleCorrectAnswerCheckboxChange, changeAnswerText, correct}) => {
     return (
         <div className="field is-grouped is-align-items-center my-4">
             <Control is-expanded>
                 <input className={`input has-background-light ${correct ? 'is-info' : ''}`}
                        type="text"
                        onInput={({target: input}) => changeAnswerText(id, input.value)}
+                       value={text}
                        onKeyDown={nextInputOnPressEnterHandler}
                        autoFocus/>
             </Control>

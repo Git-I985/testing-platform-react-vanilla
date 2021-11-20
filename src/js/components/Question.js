@@ -14,7 +14,9 @@ export const Question = (props) => {
         deleteQuestion,
         addQuestionAnswer,
         changeQuestionType,
-        changeQuestionText
+        changeQuestionText,
+        clearQuestionAnswers,
+        duplicateQuestion
     } = props;
 
     const onQuestionTypeSelectChange = ({value}) => {
@@ -23,6 +25,27 @@ export const Question = (props) => {
 
     return (
         <Box style={{border: '1px solid #dbdbdb'}}>
+            <Field is-grouped>
+                <Control>
+                    <button className="button is-light is-small is-info"
+                            tabIndex="-1"
+                            title="Дублировать вопрос"
+                            onClick={() => duplicateQuestion(id)}
+                    >
+                        <span>Дублировать вопрос</span>
+                    </button>
+                </Control>
+                <Control>
+                    <button className="button is-light is-small is-danger"
+                            tabIndex="-1"
+                            title="Удалить все ответы на вопрос"
+                            onClick={() => clearQuestionAnswers(id)}
+                            disabled={!children.length}
+                    >
+                        <span>Удалить все ответы на вопрос</span>
+                    </button>
+                </Control>
+            </Field>
             <Field is-grouped>
 
                 {/* Question index (number) */}

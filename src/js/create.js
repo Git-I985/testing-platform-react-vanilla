@@ -13,12 +13,6 @@ import {saveAs} from 'file-saver'
 import {SearchBar} from "./components/SearchBar";
 import {ControlsBar} from "./components/ControlsBar";
 
-
-// TODO добавить поиск по вопросам
-// TODO добавить кнопку дублирования вопроса
-// TODO добавить кнопку очистка всех вопросов
-// TODO добавить кнопку очистки всех ответов на вопрос
-
 const App = () => {
     const [questions, setQuestions] = useState([]);
     const [answers, setAnswers] = useState([]);
@@ -40,18 +34,28 @@ const App = () => {
     }, [questions,answers,settings]);
     // TODO =============== DEBUG
 
-    const addQuestion = () => setQuestions([...questions, createQuestionObject()])
+    const addQuestion = () => {
+        setQuestions([...questions, createQuestionObject()])
+    }
 
-    const addQuestionAnswer = (questionId) => setAnswers([...answers, createAnswerObject(questionId)])
+    const addQuestionAnswer = (questionId) => {
+        setAnswers([...answers, createAnswerObject(questionId)])
+    }
 
-    const deleteQuestion = (questionId) => setQuestions(questions.filter(question => question.id !== questionId))
+    const deleteQuestion = (questionId) => {
+        setQuestions(questions.filter(question => question.id !== questionId))
+    }
 
-    const deleteAnswer = (answerId) => setAnswers(answers.filter(({id}) => id !== answerId))
+    const deleteAnswer = (answerId) => {
+        setAnswers(answers.filter(({id}) => id !== answerId))
+    }
 
-    const resetQuestionAnswers = (questionId) => setAnswers(answers.map((answer) => ({
-        ...answer,
-        ...answer.questionId === questionId && {correct: false}
-    })))
+    const resetQuestionAnswers = (questionId) => {
+        setAnswers(answers.map((answer) => ({
+            ...answer,
+            ...answer.questionId === questionId && {correct: false}
+        })))
+    }
 
     const changeQuestionType = (questionId, type) => {
         setQuestions(questions.map(question => ({
@@ -62,15 +66,19 @@ const App = () => {
         resetQuestionAnswers(questionId)
     }
 
-    const changeAnswerText = (answerId, text) => setAnswers(answers.map(answer => ({
-        ...answer,
-        ...answer.id === answerId && {text}
-    })))
+    const changeAnswerText = (answerId, text) => {
+        setAnswers(answers.map(answer => ({
+            ...answer,
+            ...answer.id === answerId && {text}
+        })))
+    }
 
-    const changeQuestionText = (questionId, text) => setQuestions(questions.map(question => ({
-        ...question,
-        ...question.id === questionId && {text}
-    })))
+    const changeQuestionText = (questionId, text) => {
+        setQuestions(questions.map(question => ({
+            ...question,
+            ...question.id === questionId && {text}
+        })))
+    }
 
     const handleCorrectAnswerCheckboxChange = (answerId) => {
         const {questionId} = answers.find(({id}) => id === answerId)
@@ -84,6 +92,23 @@ const App = () => {
             }
             return {...answer, correct: !answer.correct}
         }))
+    }
+
+    const clearQuestionAnswers = (questionId) => {
+        setAnswers(answers.filter(({questionId: qId}) => qId !== questionId))
+    }
+
+    const duplicateQuestion = (questionId) => {
+        const duplicatedQuestion = {...questions.find(({id}) => id === questionId), id: ID()}
+        const duplicatedAnswers = answers
+            .filter(({questionId: qId}) => qId === questionId)
+            .map(answer => ({
+                ...answer,
+                id: ID(),
+                questionId: duplicatedQuestion.id
+            }))
+        setQuestions([...questions, duplicatedQuestion])
+        setAnswers([...answers, ...duplicatedAnswers])
     }
 
     return (
@@ -119,7 +144,9 @@ const App = () => {
                                       deleteQuestion={deleteQuestion}
                                       addQuestionAnswer={addQuestionAnswer}
                                       changeQuestionType={changeQuestionType}
+                                      clearQuestionAnswers={clearQuestionAnswers}
                                       changeQuestionText={changeQuestionText}
+                                      duplicateQuestion={duplicateQuestion}
                                       {...question}
                             >{answers
                                 .filter(({questionId}) => questionId === question.id)

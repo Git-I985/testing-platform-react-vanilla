@@ -24,7 +24,7 @@ export const Question = (props) => {
     }
 
     return (
-        <Box style={{border: '1px solid #dbdbdb'}}>
+        <Box style={{border: '1px solid #dbdbdb'}} question-component>
             <Field is-grouped>
                 <Control>
                     <button className="button is-light is-small is-info"
@@ -46,7 +46,7 @@ export const Question = (props) => {
                     </button>
                 </Control>
             </Field>
-            <Field style={{gap: '1rem'}} is-grouped is-flex-wrap-wrap>
+            <Field is-grouped>
 
                 {/* Question index (number) */}
                 <Control>

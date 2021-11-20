@@ -10,18 +10,48 @@
   background-color: $grey-light;
   border-radius: 10px;
   border: 5px solid $light;
+
   &:hover {
     background-color: $grey;
   }
 }
 
 .dashboard {
-  max-height: 100vh;
   height: 100vh;
+  max-width: 510px;
+  min-width: 510px;
   position: sticky;
   top: 0;
-  overflow-y: scroll;
+  left: 0;
   padding: 0 !important;
   margin: 0 !important;
   border-radius: 0;
+  transition: left .5s ease;
+
+  &-content {
+    overflow-y: scroll;
+  }
+
+  @media (max-width: 1500px) {
+    position: fixed;
+    z-index: 2;
+    left: -486px;
+  }
+
+  &-toggler-container {
+    background-color: #eaeaea;
+    display: none;
+    transition: all .5s ease;
+    &:hover {
+      filter: brightness(.9);
+    }
+
+    @media (max-width: 1500px) {
+      display: flex;
+    }
+  }
+}
+
+.question-component {
+  min-width: 950px;
 }

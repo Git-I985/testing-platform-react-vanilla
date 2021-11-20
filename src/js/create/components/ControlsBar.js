@@ -23,7 +23,7 @@ export const ControlsBar = ({addQuestion, generateTest, questions, handleSearchI
                     <button className='button is-info has-background-info-dark is-fullwidth' onClick={addQuestion}>Добавить вопрос</button>
                 </Control>
             </Field>
-            <Field style={{gap: '1rem'}} is-grouped is-flex-wrap-wrap>
+            <Field is-grouped is-flex-wrap-wrap>
                 <Control is-expanded>
                     <button className='button is-info has-background-info-dark is-fullwidth' onClick={generateTest} disabled={!questions.length}>
                         <span>Сохранить тест</span>

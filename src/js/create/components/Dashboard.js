@@ -19,6 +19,8 @@ export const SettingsDashboard = ({onSettingsChange, header, footer}) => {
         [name]: false
     }), {}))
 
+    const [opened, setOpened] = useState(false)
+
     useEffect(() => {
         onSettingsChange(settings)
     }, [settings]);
@@ -28,31 +30,39 @@ export const SettingsDashboard = ({onSettingsChange, header, footer}) => {
     }
 
     return (
-        <Box dashboard>
-            {header}
-            <div className="p-5">
-                <Field>
-                    <label className="label has-text-info">Название</label>
-                    <Control>
-                        <input className="input is-info" type="text"/>
-                    </Control>
-                </Field>
-                <Field>
-                    <label className="label is-small has-text-info">Описание</label>
-                    <Control>
-                        <textarea className="textarea has-fixed-size is-small is-info"/>
-                    </Control>
-                </Field>
-                {settingsDashboardFields.map(field => (
-                    <Field key={field.name}>
-                        {field.label && <label className="label is-small has-text-info">{field.label}</label>}
+        <Box style={{...opened && {left: 0}}} dashboard is-flex>
+            <div className="dashboard-content">
+                {header}
+                <div className="p-5">
+                    <Field>
+                        <label className="label has-text-info">Название</label>
                         <Control>
-                            <CheckBox text={field.text} checked={settings[field.name]}
-                                      onChange={() => handleChange(field.name)} is-info is-small/>
+                            <input className="input is-info" type="text"/>
                         </Control>
                     </Field>
-                ))}
-                {footer}
+                    <Field>
+                        <label className="label is-small has-text-info">Описание</label>
+                        <Control>
+                            <textarea className="textarea has-fixed-size is-small is-info"/>
+                        </Control>
+                    </Field>
+                    {settingsDashboardFields.map(field => (
+                        <Field key={field.name}>
+                            {field.label && <label className="label is-small has-text-info">{field.label}</label>}
+                            <Control>
+                                <CheckBox text={field.text} checked={settings[field.name]}
+                                          onChange={() => handleChange(field.name)} is-info is-small/>
+                            </Control>
+                        </Field>
+                    ))}
+                    {footer}
+                </div>
+            </div>
+            <div className="dashboard-toggler-container is-align-items-center is-justify-content-center is-clickable"
+                 onClick={() => setOpened(!opened)}>
+                <span className="icon has-text-grey-light">
+                    <i className="fas fa-chevron-right" style={{transform: opened ? 'rotate(180deg)' : 'none'}}/>
+                </span>
             </div>
         </Box>
     )

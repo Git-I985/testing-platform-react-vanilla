@@ -135,7 +135,7 @@ const App = () => {
                     questions={questions}
                     handleSearchInputChange={handleSearchInputChange}/>}
                     footer={
-                        <div className="mt-6">
+                        <div>
                             <div className="field is-unselectable">
                                 <input id="switchRoundedInfo" type="checkbox" name="switchRoundedInfo"
                                        className="switch is-rounded is-info" checked={debugMode}

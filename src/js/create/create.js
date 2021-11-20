@@ -2,12 +2,12 @@ import ReactDOM from "react-dom";
 import React, {useEffect, useState} from 'react';
 import 'bulma-checkradio';
 import 'bulma-switch';
-import './../css/bulma.custom.scss';
+import '../../css/bulma.custom.scss';
 import {Question} from "./components/Question";
 import {Answer} from "./components/Answer";
 import {SettingsDashboard} from "./components/Dashboard";
 import {createAnswerObject, createQuestionObject, ONE_ANSWER_TYPE} from "./entities/common";
-import {Box, EmptyDataMessage, ID} from "./components/Common";
+import {EmptyDataMessage, ID} from "./components/Common";
 import {mergeData, dataIsValid} from "./functions/common";
 import SimpleCrypto from "simple-crypto-js"
 import {saveAs} from 'file-saver'
@@ -21,7 +21,7 @@ const App = () => {
 
     const generateTest = () => {
         const combinedQuestions = mergeData({questions, answers, settings})
-        // if(dataIsValid(combinedQuestions)) { }
+        // TODO if(dataIsValid(combinedQuestions)) { }
         const secretKey = ID();
         const crypter = new SimpleCrypto(secretKey);
         const encodedData = crypter.encrypt(combinedQuestions)
@@ -123,7 +123,7 @@ const App = () => {
         setSearchString(searchInputValue.toLowerCase())
     }
 
-    const filtredQuestions = searchString.length ? questions.filter(({text}) => text.toLowerCase().includes(searchString)) : questions;
+    const filteredQuestions = searchString.length ? questions.filter(({text}) => text.toLowerCase().includes(searchString)) : questions;
 
     return (
         <div className="is-flex is-align-items-start">
@@ -153,7 +153,7 @@ const App = () => {
                 {!questions.length && <EmptyDataMessage message={'Добавьте вопросы'}/>}
 
                 <div className="questions-container">
-                    {filtredQuestions.map((question, questionIndex) => (
+                    {filteredQuestions.map((question, questionIndex) => (
                         <Question key={question.id}
                                   index={questionIndex}
                                   deleteQuestion={deleteQuestion}

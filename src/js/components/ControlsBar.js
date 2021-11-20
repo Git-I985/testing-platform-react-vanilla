@@ -1,12 +1,15 @@
 import React from "react";
 import {Control, Field} from "./Common";
 
-export const ControlsBar = ({addQuestion, generateTest, questions}) => {
+export const ControlsBar = ({addQuestion, generateTest, questions, handleSearchInputChange}) => {
     return (
         <div className="has-background-info p-5">
         <Field has-addons>
                 <Control is-expanded>
-                    <input className="input is-info" type="text" placeholder="Найти вопрос... любое слово или фраза"/>
+                    <input className="input is-info"
+                           type="text"
+                           onChange={handleSearchInputChange}
+                           placeholder="Найти вопрос... любое слово или фраза"/>
                 </Control>
                 <Control>
                     <button className="button is-info has-background-info-dark">

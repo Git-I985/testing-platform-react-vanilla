@@ -12,7 +12,7 @@ export const Answer = ({id, deleteAnswer, question, text, handleCorrectAnswerChe
                        onInput={({target: input}) => changeAnswerText(id, input.value)}
                        value={text}
                        onKeyDown={nextInputOnPressEnterHandler}
-                       autoFocus/>
+                />
             </Control>
             <Control is-unselectable>
                 <input className={`is-checkradio is-info ${correct && 'has-background-color'}`}

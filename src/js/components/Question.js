@@ -61,7 +61,7 @@ export const Question = (props) => {
                            value={text}
                            onInput={({target: input}) => changeQuestionText(id, input.value)}
                            onKeyDown={nextInputOnPressEnterHandler}
-                           autoFocus/>
+                    />
                 </Control>
 
                 {/* Question type */}

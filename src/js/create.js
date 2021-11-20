@@ -15,6 +15,7 @@ import {ControlsBar} from "./components/ControlsBar";
 const App = () => {
     const [questions, setQuestions] = useState([]);
     const [answers, setAnswers] = useState([]);
+    const [searchString, setSearchString] = useState('');
     const [settings, setSettings] = useState({});
 
     const generateTest = () => {
@@ -110,11 +111,21 @@ const App = () => {
         setAnswers([...answers, ...duplicatedAnswers])
     }
 
+    const handleSearchInputChange = ({target: {value: searchInputValue}}) => {
+        setSearchString(searchInputValue.toLowerCase())
+    }
+
+    const filtredQuestions = searchString.length ? questions.filter(({text}) => text.toLowerCase().includes(searchString)) : questions;
+
     return (
         <div className="is-flex is-align-items-start">
             <SettingsDashboard
                 onSettingsChange={(updatedSettings) => setSettings(updatedSettings)}
-                header={<ControlsBar generateTest={generateTest} addQuestion={addQuestion} questions={questions}/>}
+                header={<ControlsBar
+                    generateTest={generateTest}
+                    addQuestion={addQuestion}
+                    questions={questions}
+                    handleSearchInputChange={handleSearchInputChange}/>}
                 footer={<pre>{generated}</pre>}
             />
             <div className="is-flex-grow-5 px-6">
@@ -123,28 +134,28 @@ const App = () => {
                 {!questions.length && <EmptyDataMessage message={'Добавьте вопросы'}/>}
 
                 <div className="questions-container">
-                    {questions.map((question, questionIndex) => (
-                        <Question key={question.id}
-                                  index={questionIndex}
-                                  deleteQuestion={deleteQuestion}
-                                  addQuestionAnswer={addQuestionAnswer}
-                                  changeQuestionType={changeQuestionType}
-                                  clearQuestionAnswers={clearQuestionAnswers}
-                                  changeQuestionText={changeQuestionText}
-                                  duplicateQuestion={duplicateQuestion}
-                                  {...question}
-                        >{answers
-                            .filter(({questionId}) => questionId === question.id)
-                            .map((answer) => (
-                                <Answer key={answer.id}
-                                        deleteAnswer={deleteAnswer}
-                                        question={question}
-                                        handleCorrectAnswerCheckboxChange={handleCorrectAnswerCheckboxChange}
-                                        changeAnswerText={changeAnswerText}
-                                        {...answer}/>
-                            ))}
-                        </Question>
-                    ))}
+                    {filtredQuestions.map((question, questionIndex) => (
+                            <Question key={question.id}
+                                      index={questionIndex}
+                                      deleteQuestion={deleteQuestion}
+                                      addQuestionAnswer={addQuestionAnswer}
+                                      changeQuestionType={changeQuestionType}
+                                      clearQuestionAnswers={clearQuestionAnswers}
+                                      changeQuestionText={changeQuestionText}
+                                      duplicateQuestion={duplicateQuestion}
+                                      {...question}
+                            >{answers
+                                .filter(({questionId}) => questionId === question.id)
+                                .map((answer) => (
+                                    <Answer key={answer.id}
+                                            deleteAnswer={deleteAnswer}
+                                            question={question}
+                                            handleCorrectAnswerCheckboxChange={handleCorrectAnswerCheckboxChange}
+                                            changeAnswerText={changeAnswerText}
+                                            {...answer}/>
+                                ))}
+                            </Question>
+                        ))}
                 </div>
             </div>
         </div>

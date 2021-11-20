@@ -29,6 +29,9 @@
   transition: left .5s ease;
 
   &-content {
+    &::-webkit-scrollbar {
+      display: none;
+    }
     overflow-y: scroll;
   }
 

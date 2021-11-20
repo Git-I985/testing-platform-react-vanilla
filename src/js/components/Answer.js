@@ -7,14 +7,14 @@ export const Answer = ({id, deleteAnswer, question, handleCorrectAnswerCheckboxC
     return (
         <div className="field is-grouped is-align-items-center my-4">
             <Control is-expanded>
-                <input className={`input has-background-light ${correct ? 'is-primary' : ''}`}
+                <input className={`input has-background-light ${correct ? 'is-info' : ''}`}
                        type="text"
                        onInput={({target: input}) => changeAnswerText(id, input.value)}
                        onKeyDown={nextInputOnPressEnterHandler}
                        autoFocus/>
             </Control>
             <Control is-unselectable>
-                <input className={`is-checkradio is-primary ${correct && 'has-background-color'}`}
+                <input className={`is-checkradio is-info ${correct && 'has-background-color'}`}
                        id={id}
                        type={question.type === MULTIPLE_ANSWERS_TYPE ? 'checkbox' : "radio"}
                        name={question.type === MULTIPLE_ANSWERS_TYPE ? id : question.id}

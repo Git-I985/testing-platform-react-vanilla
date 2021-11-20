@@ -18,9 +18,10 @@ export const Dropdown = ({text, items = [], onChange}) => {
     const [active, setActive] = useState(false)
     const [selected, setSelected] = useState(items.find(({selected}) => selected))
 
-    const onSelectedChange = (newValue) => {
-        setSelected(newValue)
-        onChange(newValue)
+    const onSelectedChange = (newSelected) => {
+        if(selected.value === newSelected.value) return;
+        setSelected(newSelected)
+        onChange(newSelected)
     }
 
     return (
@@ -33,7 +34,7 @@ export const Dropdown = ({text, items = [], onChange}) => {
              }>
 
             <div className="dropdown-trigger">
-                <button className={`button ${!selected.value ? 'has-text-grey-light' : 'is-primary'}`}
+                <button className={`button ${!selected.value ? 'has-text-grey-light' : 'is-info'}`}
                         aria-haspopup="true" aria-controls="dropdown-menu">
                     <span>{selected.text || text}</span>
                     <span className="icon is-small"> <i className="fas fa-angle-down" aria-hidden="true"/></span>

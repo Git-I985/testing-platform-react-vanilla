@@ -103,7 +103,9 @@ const App = () => {
     }
 
     const duplicateQuestion = (questionId) => {
-        const duplicatedQuestion = {...questions.find(({id}) => id === questionId), id: ID()}
+        /** duplicate values, but adds new unique IDs */
+        const questionIndex = questions.findIndex(({id}) => id === questionId)
+        const duplicatedQuestion = {...questions[questionIndex], id: ID()}
         const duplicatedAnswers = answers
             .filter(({questionId: qId}) => qId === questionId)
             .map(answer => ({
@@ -111,7 +113,9 @@ const App = () => {
                 id: ID(),
                 questionId: duplicatedQuestion.id
             }))
-        setQuestions([...questions, duplicatedQuestion])
+
+        /** insert after duplicated answer */
+        setQuestions([...questions].splice(questionIndex, 0, duplicatedQuestion))
         setAnswers([...answers, ...duplicatedAnswers])
     }
 

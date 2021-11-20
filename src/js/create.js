@@ -33,12 +33,12 @@ const App = () => {
         saveAs(new Blob([JSON.stringify({secretKey, encodedData})], {type: 'application/json'}), 'test.json')
     }
 
-    // TODO DEBUG
+    // TODO =============== DEBUG
     const [generated, setGenerated] = useState('')
     useEffect(() => {
         setGenerated(JSON.stringify(mergeData({questions, answers, settings}), null, 4))
     }, [questions,answers,settings]);
-
+    // TODO =============== DEBUG
 
     const addQuestion = () => setQuestions([...questions, createQuestionObject()])
 
@@ -88,10 +88,12 @@ const App = () => {
 
     return (
         <div className='pt-6 container'>
+            {/* TODO =============== DEBUG --> */}
             <div className="is-flex">
                 <div>
                     <pre>{generated}</pre>
                 </div>
+                {/* TODO =============== DEBUG --> */}
                 <div className="is-flex-grow-1">
                     <SettingsDashboard onSettingsChange={(updatedSettings) => setSettings(updatedSettings)}/>
                     <Box style={{
@@ -133,7 +135,9 @@ const App = () => {
                         ))}
                     </div>
                 </div>
+                {/* TODO =============== DEBUG --> */}
             </div>
+            {/* TODO =============== DEBUG --> */}
         </div>
     );
 };

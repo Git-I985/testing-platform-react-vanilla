@@ -115,7 +115,9 @@ const App = () => {
             }))
 
         /** insert after duplicated answer */
-        setQuestions([...questions].splice(questionIndex, 0, duplicatedQuestion))
+        let newQuestions = [...questions]
+        newQuestions.splice(questionIndex, 0, duplicatedQuestion)
+        setQuestions(newQuestions)
         setAnswers([...answers, ...duplicatedAnswers])
     }
 

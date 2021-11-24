@@ -141,6 +141,7 @@ const App = () => {
                 }
                 footer={
                     <div>
+                        <br/>
                         <div className="field is-unselectable">
                             <input id="switchRoundedInfo" type="checkbox" name="switchRoundedInfo"
                                    className="switch is-rounded is-info" checked={debugMode}
@@ -148,6 +149,7 @@ const App = () => {
                             />
                             <label htmlFor="switchRoundedInfo">Режим отладки</label>
                         </div>
+                        <br/>
                         {debugMode && <pre>{generated}</pre>}
                     </div>
                 }

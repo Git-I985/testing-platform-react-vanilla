@@ -36,6 +36,7 @@ export const SettingsDashboard = ({onSettingsChange, header, footer}) => {
             <div className="dashboard-content">
                 {header}
                 <div className="p-5">
+                    {/* Test title field */}
                     <Field>
                         <label className="label has-text-info">Название</label>
                         <Control>
@@ -48,6 +49,7 @@ export const SettingsDashboard = ({onSettingsChange, header, footer}) => {
                             />
                         </Control>
                     </Field>
+                    {/* Test description field */}
                     <Field>
                         <label className="label is-small has-text-info">Описание</label>
                         <Control>
@@ -59,6 +61,7 @@ export const SettingsDashboard = ({onSettingsChange, header, footer}) => {
                             />
                         </Control>
                     </Field>
+                    {/* Test settings checkboxes */}
                     {settingsDashboardFields.map(field => (
                         <Field key={field.name}>
                             {field.label && <label className="label is-small has-text-info">{field.label}</label>}
@@ -71,6 +74,7 @@ export const SettingsDashboard = ({onSettingsChange, header, footer}) => {
                     {footer}
                 </div>
             </div>
+            {/* Toggle button */}
             <div className="dashboard-toggler-container is-align-items-center is-justify-content-center is-clickable"
                  onClick={() => setOpened(!opened)}>
                 <span className="icon has-text-grey-light">

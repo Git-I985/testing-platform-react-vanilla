@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {Box, CheckBox, Control, Field} from "./Common";
 
 export const settingsDashboardFields = [
@@ -12,10 +12,13 @@ export const settingsDashboardFields = [
     {text: 'Показывать подсказки', name: 'settings8'},
 ]
 
-export const SettingsDashboard = ({onSettingsChange, header, footer}) => {
-    const settingsObject = settingsDashboardFields.reduce((acc, {name}) => ({...acc, [name]: false}), {})
-    const otherSettings = {test: {name: '', description: ''}};
+const getSettingsObject = () => {
+    return settingsDashboardFields.reduce((acc, {name}) => ({...acc, [name]: false}), {})
+}
 
+export const SettingsDashboard = ({onSettingsChange, header, footer}) => {
+    const otherSettings = {test: {name: '', description: ''}};
+    const settingsObject = useMemo(getSettingsObject, []);
     const [settings, setSettings] = useState({...otherSettings, ...settingsObject})
 
     const [opened, setOpened] = useState(false)

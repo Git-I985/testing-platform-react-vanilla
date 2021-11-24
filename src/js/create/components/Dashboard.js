@@ -13,11 +13,10 @@ export const settingsDashboardFields = [
 ]
 
 export const SettingsDashboard = ({onSettingsChange, header, footer}) => {
-    /** object with n keys named by settingsDashboardFields entries name field */
-    const [settings, setSettings] = useState(settingsDashboardFields.reduce((acc, {name}) => ({
-        ...acc,
-        [name]: false
-    }), {}))
+    const settingsObject = settingsDashboardFields.reduce((acc, {name}) => ({...acc, [name]: false}), {})
+    const otherSettings = {test: {name: '', description: ''}};
+
+    const [settings, setSettings] = useState({...otherSettings, ...settingsObject})
 
     const [opened, setOpened] = useState(false)
 
@@ -37,13 +36,24 @@ export const SettingsDashboard = ({onSettingsChange, header, footer}) => {
                     <Field>
                         <label className="label has-text-info">Название</label>
                         <Control>
-                            <input className="input is-info" type="text"/>
+                            <input className="input is-info"
+                                   type="text"
+                                   value={settings.test.name}
+                                   onChange={({target: {value: name}}) => {
+                                       setSettings({...settings, test: {...settings.test, name}})
+                                   }}
+                            />
                         </Control>
                     </Field>
                     <Field>
                         <label className="label is-small has-text-info">Описание</label>
                         <Control>
-                            <textarea className="textarea has-fixed-size is-small is-info"/>
+                            <textarea className="textarea has-fixed-size is-small is-info"
+                                      value={settings.test.description}
+                                      onChange={({target: {value: description}}) => {
+                                          setSettings({...settings, test: {...settings.test, description}})
+                                      }}
+                            />
                         </Control>
                     </Field>
                     {settingsDashboardFields.map(field => (

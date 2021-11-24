@@ -17,8 +17,9 @@
     "simple-crypto-js": "^3.0.0"
   },
   "scripts": {
-    "dev": "parcel watch -d ./dist --public-url ./ ./src/*.html",
-    "desktop": "electron main.js",
+    "dev:watch": "parcel watch -d ./dist ./src/*.html",
+    "dev:server": "parcel ./src/*.html",
+    "electron": "electron main.js",
     "build": "rm -rf ./build && parcel build -d build/ --no-cache --no-source-maps --public-url ./ ./src/*.html"
   },
   "keywords": [],

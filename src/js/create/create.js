@@ -131,29 +131,29 @@ const App = () => {
         <div className="is-flex is-align-items-start">
             <SettingsDashboard
                 onSettingsChange={(updatedSettings) => setSettings(updatedSettings)}
-                header={<ControlsBar
-                    generateTest={generateTest}
-                    addQuestion={addQuestion}
-                    questions={questions}
-                    handleSearchInputChange={handleSearchInputChange}/>}
-                    footer={
-                        <div>
-                            <div className="field is-unselectable">
-                                <input id="switchRoundedInfo" type="checkbox" name="switchRoundedInfo"
-                                       className="switch is-rounded is-info" checked={debugMode}
-                                       onChange={() => setDebugMode(!debugMode)}
-                                />
-                                <label htmlFor="switchRoundedInfo">Режим отладки</label>
-                            </div>
-                            {debugMode && <pre>{generated}</pre>}
+                header={
+                    <ControlsBar
+                        generateTest={generateTest}
+                        addQuestion={addQuestion}
+                        questions={questions}
+                        handleSearchInputChange={handleSearchInputChange}
+                    />
+                }
+                footer={
+                    <div>
+                        <div className="field is-unselectable">
+                            <input id="switchRoundedInfo" type="checkbox" name="switchRoundedInfo"
+                                   className="switch is-rounded is-info" checked={debugMode}
+                                   onChange={() => setDebugMode(!debugMode)}
+                            />
+                            <label htmlFor="switchRoundedInfo">Режим отладки</label>
                         </div>
-                    }
+                        {debugMode && <pre>{generated}</pre>}
+                    </div>
+                }
             />
             <div className="is-flex-grow-5 px-6">
-                <hr/>
-
                 {!questions.length && <EmptyDataMessage message={'Добавьте вопросы'}/>}
-
                 <div className="questions-container">
                     {filteredQuestions.map((question, questionIndex) => (
                         <Question key={question.id}
